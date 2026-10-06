@@ -1,118 +1,63 @@
-# OpenFlex Drivers 说明
+# OpenFlex 驱动包
 
-本目录存放 OpenFlex 安装时需要用到的本地依赖包和驱动包。
+本目录存放 OpenFlex 安装脚本使用的、按平台划分的本地驱动包。
 
-推荐直接使用安装脚本统一安装：
+## 目录结构
+
+```text
+openflex_drivers/
+├── 22.04-amd64-humble/       # Ubuntu 22.04 amd64 / ROS 2 Humble
+├── 24.04-arm64-Jazzy-Jetson/ # Ubuntu 24.04 arm64 Jetson / ROS 2 Jazzy
+├── LICENSE
+├── README.md
+├── README_CN.md
+└── openflex_component.yaml
+```
+
+## 平台对应关系
+
+| 主机平台 | ROS 2 发行版 | 驱动目录 | 脚本参数 |
+| --- | --- | --- | --- |
+| Ubuntu 22.04 amd64 | Humble | `22.04-amd64-humble/` | `--platform humble` |
+| Ubuntu 24.04 arm64 Jetson | Jazzy | `24.04-arm64-Jazzy-Jetson/` | `--platform jazzy` |
+
+只能安装与当前主机匹配的目录，不能混用两个目录中的驱动包。
+
+## 完整包列表
+
+### Ubuntu 22.04 amd64 / ROS 2 Humble
+
+```text
+GTSAM-4.3.0-Linux.deb
+livox-sdk2_2.0.0-1_amd64.deb
+openflex-acados_0.1.0_amd64.deb
+openflex-can-driver_1.0.0_amd64.deb
+sophus_1.22.10-1_amd64.deb
+openflex_driver-1.0.0-cp310-cp310-manylinux_2_17_x86_64.whl
+```
+
+### Ubuntu 24.04 arm64 Jetson / ROS 2 Jazzy
+
+```text
+libgtsam-dev_4.3.0-1_arm64.deb
+livox-sdk2_arm64.deb
+openflex-acados_0.1.0_arm64.deb
+openflex-can-driver_1.0.0_arm64.deb
+sophus_1.22.10-1_arm64.deb
+openflex_driver-1.2.0-py3-none-any.whl
+```
+
+## 使用脚本安装
+
+执行与主机平台匹配的命令：
 
 ```bash
-cd ~/openflex_all/openflex_ws/src/OpenFlex
+cd ~/openflex_all/openflex_ws/src/OpenFleX
 chmod +x ./install_openflex_drivers_and_build.sh
-./install_openflex_drivers_and_build.sh
+
+# Ubuntu 22.04 amd64 / ROS 2 Humble
+./install_openflex_drivers_and_build.sh --env --platform humble
+
+# Ubuntu 24.04 arm64 Jetson / ROS 2 Jazzy
+./install_openflex_drivers_and_build.sh --env --platform jazzy
 ```
-
-安装脚本会自动扫描并安装本目录下的：
-
-- `*.deb`
-- `*.whl`
-
-## 包说明
-
-### 1. `livox-sdk2_2.0.0-1_amd64.deb`
-
-作用：
-- Livox 雷达 SDK2 安装包
-
-用途：
-- 给底盘雷达相关功能提供底层 SDK
-- 供 `livox_ros_driver2` 等相关功能使用
-
-安装方式：
-- 推荐通过安装脚本自动安装
-- 也可以手动安装：
-
-```bash
-sudo apt install ./livox-sdk2_2.0.0-1_amd64.deb
-```
-
-### 2. `openflex-acados_0.1.0_amd64.deb`
-
-作用：
-- OpenFlex 使用的 acados 安装包
-
-用途：
-- 提供工程中用到的 acados 运行库和头文件
-- 供依赖 acados 的控制相关模块使用
-
-安装方式：
-- 推荐通过安装脚本自动安装
-- 也可以手动安装：
-
-```bash
-sudo apt install ./openflex-acados_0.1.0_amd64.deb
-```
-
-### 3. `openflex-can-driver_1.0.0_amd64.deb`
-
-作用：
-- OpenFlex 底层 CAN 通信驱动库安装包
-
-用途：
-- 提供底盘与升降台相关的底层通信库
-- 提供工作空间编译时要用到的 `openflex_can` 系统库与 CMake 配置
-
-安装方式：
-- 推荐通过安装脚本自动安装
-- 也可以手动安装：
-
-```bash
-sudo apt install ./openflex-can-driver_1.0.0_amd64.deb
-```
-
-### 4. `openflex_driver-1.0.0-cp310-cp310-manylinux_2_17_x86_64.whl`
-
-作用：
-- OpenFlex 的 Python 驱动包
-
-用途：
-- 提供 Python 侧的驱动与调用能力
-- 供整机中依赖 Python 驱动的功能使用
-
-安装方式：
-- 推荐通过安装脚本自动安装
-- 也可以手动安装：
-
-```bash
-pip3 install --user ./openflex_driver-1.0.0-cp310-cp310-manylinux_2_17_x86_64.whl
-```
-
-## 建议
-
-正常使用时，直接运行安装脚本即可，不建议手动逐个安装。
-
-## 许可证
-
-本包通过 知识共享 署名-非商业性使用-相同方式共享 4.0 国际许可协议 (CC BY-NC-SA 4.0) 进行许可。
-
-版权所有 (c) 2026 成都长数机器人有限公司 (Chengdu Changshu Robot Co., Ltd.)
-
-详情请参阅 [LICENSE](LICENSE) 文件或访问：http://creativecommons.org/licenses/by-nc-sa/4.0/
-
-## 致谢
-
-本包是 OpenFlex 全身人形机器人平台生态系统的一部分，专为人形机器人领域的研究和工业应用而开发。
-
----
-
-## 📞 联系我们
-
-### 成都长数机器人有限公司
-**Chengdu Changshu Robotics Co., Ltd.**
-
-| 联系方式 | 信息 |
-|---------|------|
-| 📧 邮箱 | openarmrobot@gmail.com |
-| 📱 电话/微信 | +86-17746530375 |
-| 🌐 官网 | https://openarmx.com/ |
-| 🌐 文档 | http://docs.openarmx.com/ |
-| 📍 地址 | 天津市西青区・稻潮机器人体验基地（明日之城）・天津市人形机器人中心 |
-| 👤 联系人 | 王先生 |
